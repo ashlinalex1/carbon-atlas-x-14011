@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun, Menu, X } from "lucide-react";
+import { Moon, Sun, Menu, X, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const Navigation = () => {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const [isDark, setIsDark] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -18,12 +21,18 @@ export const Navigation = () => {
     document.documentElement.classList.toggle("dark");
   };
 
-  const navLinks = [
-    { to: "/", label: "Home" },
-    { to: "/dashboard", label: "Dashboard" },
-    { to: "/offsets", label: "Offsets" },
-    { to: "/reports", label: "Reports" },
-  ];
+  const navLinks = user
+    ? [
+        { to: "/dashboard", label: "Dashboard" },
+        { to: "/offsets", label: "Offsets" },
+        { to: "/reports", label: "Reports" },
+      ]
+    : [
+        { to: "/", label: "Home" },
+        { to: "/dashboard", label: "Dashboard" },
+        { to: "/offsets", label: "Offsets" },
+        { to: "/reports", label: "Reports" },
+      ];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-lg">
@@ -64,12 +73,28 @@ export const Navigation = () => {
             </Button>
 
             <div className="hidden md:flex items-center space-x-2">
-              <Button variant="ghost" asChild>
-                <Link to="/login">Login</Link>
-              </Button>
-              <Button asChild>
-                <Link to="/register">Get Started</Link>
-              </Button>
+              {user ? (
+                <Button
+                  variant="ghost"
+                  onClick={async () => {
+                    await signOut();
+                    navigate('/');
+                  }}
+                  className="gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Sign Out
+                </Button>
+              ) : (
+                <>
+                  <Button variant="ghost" asChild>
+                    <Link to="/login">Login</Link>
+                  </Button>
+                  <Button asChild>
+                    <Link to="/register">Get Started</Link>
+                  </Button>
+                </>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -96,6 +121,19 @@ export const Navigation = () => {
           )}
         >
           <div className="flex flex-col space-y-4 pt-4">
+            {user && (
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+                onClick={async () => {
+                  await signOut();
+                  navigate('/');
+                }}
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                Sign Out
+              </Button>
+            )}
             {navLinks.map((link) => (
               <Link
                 key={link.to}

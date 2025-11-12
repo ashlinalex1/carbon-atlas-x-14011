@@ -80,15 +80,15 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               <p className="text-sm font-medium">{user?.email}</p>
               <p className="text-xs text-muted-foreground">Logged in</p>
             </div>
-            <Button
+            {/* <Button
               variant="outline"
               size="sm"
               onClick={signOut}
               className="w-full"
             >
               <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
+              L
+            </Button> */}
           </div>
         </aside>
 
