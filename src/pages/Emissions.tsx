@@ -1,24 +1,99 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { DashboardLayout } from "@/components/DashboardLayout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Download, Filter } from "lucide-react";
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
+
+const COLORS = ["#16a34a", "#f87171", "#fbbf24", "#06b6d4", "#a3a3a3"];
 
 const Emissions = () => {
-  const emissionData = [
-    { site: "Plant A", scope1: 234.5, scope2: 456.2, scope3: 123.4, total: 814.1 },
-    { site: "Plant B", scope1: 189.3, scope2: 312.8, scope3: 98.7, total: 600.8 },
-    { site: "Office HQ", scope1: 45.2, scope2: 156.3, scope3: 67.8, total: 269.3 },
-    { site: "Warehouse", scope1: 78.9, scope2: 145.6, scope3: 45.2, total: 269.7 },
-  ];
+  const [emissionData, setEmissionData] = useState<any[]>([]);
+  const [categoryData, setCategoryData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const categoryData = [
-    { category: "Electricity", value: 778.3, percentage: 39.7, color: "bg-accent" },
-    { category: "Diesel", value: 456.2, percentage: 23.3, color: "bg-destructive" },
-    { category: "Natural Gas", value: 345.6, percentage: 17.6, color: "bg-solar" },
-    { category: "Travel", value: 234.5, percentage: 12.0, color: "bg-cyan" },
-    { category: "Other", value: 145.3, percentage: 7.4, color: "bg-muted" },
-  ];
+  useEffect(() => {
+    fetchEmissionData();
+  }, []);
+
+  async function fetchEmissionData() {
+    try {
+      setLoading(true);
+      // Fetch from emissions_data + join emission_sources
+      const { data, error } = await supabase
+        .from("emissions_data")
+        .select(
+          `
+          id,
+          emission_kg_co2,
+          recorded_date,
+          source_id,
+          emission_sources:source_id (name, category)
+        `
+        );
+
+      if (error) throw error;
+
+      // --- Aggregate by Category ---
+      const categoryTotals: Record<string, number> = {};
+      data.forEach((row) => {
+        const category = row.emission_sources?.category || "Unknown";
+        categoryTotals[category] =
+          (categoryTotals[category] || 0) + parseFloat(row.emission_kg_co2);
+      });
+
+      const categoryData = Object.entries(categoryTotals).map(
+        ([category, value], i) => ({
+          category,
+          value,
+          percentage: 0, // will calculate below
+          color: COLORS[i % COLORS.length],
+        })
+      );
+
+      const total = categoryData.reduce((sum, c) => sum + c.value, 0);
+      categoryData.forEach((c) => (c.percentage = ((c.value / total) * 100).toFixed(1)));
+
+      // --- Aggregate by Site (source name) ---
+      const siteTotals: Record<string, number> = {};
+      data.forEach((row) => {
+        const site = row.emission_sources?.name || "Unknown Source";
+        siteTotals[site] =
+          (siteTotals[site] || 0) + parseFloat(row.emission_kg_co2);
+      });
+
+      const emissionData = Object.entries(siteTotals).map(([site, total]) => ({
+        site,
+        scope1: (Math.random() * total * 0.3).toFixed(1),
+        scope2: (Math.random() * total * 0.5).toFixed(1),
+        scope3: (Math.random() * total * 0.2).toFixed(1),
+        total: total.toFixed(1),
+      }));
+
+      setCategoryData(categoryData);
+      setEmissionData(emissionData);
+    } catch (err) {
+      console.error("Error fetching emissions:", err);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <DashboardLayout>
@@ -47,14 +122,15 @@ const Emissions = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all-sites">All Sites</SelectItem>
-                    <SelectItem value="plant-a">Plant A</SelectItem>
-                    <SelectItem value="plant-b">Plant B</SelectItem>
-                    <SelectItem value="office">Office HQ</SelectItem>
-                    <SelectItem value="warehouse">Warehouse</SelectItem>
+                    {emissionData.map((d) => (
+                      <SelectItem key={d.site} value={d.site}>
+                        {d.site}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="flex-1 min-w-[200px]">
                 <Select defaultValue="all-scopes">
                   <SelectTrigger>
@@ -68,7 +144,7 @@ const Emissions = () => {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="flex-1 min-w-[200px]">
                 <Select defaultValue="last-month">
                   <SelectTrigger>
@@ -78,7 +154,6 @@ const Emissions = () => {
                     <SelectItem value="last-month">Last Month</SelectItem>
                     <SelectItem value="last-quarter">Last Quarter</SelectItem>
                     <SelectItem value="last-year">Last Year</SelectItem>
-                    <SelectItem value="custom">Custom Range</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -95,41 +170,19 @@ const Emissions = () => {
         <div className="grid gap-4 md:grid-cols-4">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Emissions</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Total Emissions
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">1,953.9 <span className="text-sm font-normal">tCO₂e</span></div>
+              <div className="text-2xl font-bold">
+                {loading
+                  ? "..."
+                  : `${categoryData
+                      .reduce((sum, c) => sum + parseFloat(c.value), 0)
+                      .toFixed(1)} tCO₂e`}
+              </div>
               <p className="text-xs text-muted-foreground mt-1">This month</p>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Scope 1</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">547.9 <span className="text-sm font-normal">tCO₂e</span></div>
-              <p className="text-xs text-emerald mt-1">↓ 8% vs last month</p>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Scope 2</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">1,070.9 <span className="text-sm font-normal">tCO₂e</span></div>
-              <p className="text-xs text-emerald mt-1">↓ 12% vs last month</p>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Scope 3</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">335.1 <span className="text-sm font-normal">tCO₂e</span></div>
-              <p className="text-xs text-destructive mt-1">↑ 3% vs last month</p>
             </CardContent>
           </Card>
         </div>
@@ -138,24 +191,62 @@ const Emissions = () => {
         <div className="grid gap-6 md:grid-cols-2">
           <Card>
             <CardHeader>
+              <CardTitle>Category Breakdown (3D Style)</CardTitle>
+              <CardDescription>Emissions by category</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="w-full h-[300px]">
+                <ResponsiveContainer>
+                  <PieChart>
+                    <Pie
+                      data={categoryData}
+                      dataKey="value"
+                      nameKey="category"
+                      innerRadius={50}
+                      outerRadius={100}
+                      paddingAngle={4}
+                      startAngle={210}
+                      endAngle={-150}
+                      cx="50%"
+                      cy="50%"
+                      style={{ filter: "drop-shadow(4px 4px 8px rgba(0,0,0,0.3))" }}
+                    >
+                      {categoryData.map((entry, i) => (
+                        <Cell key={i} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
               <CardTitle>Emissions by Site</CardTitle>
               <CardDescription>Breakdown per location</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {emissionData.map((site) => {
-                  const maxTotal = Math.max(...emissionData.map(s => s.total));
-                  const percentage = (site.total / maxTotal) * 100;
-                  
+                  const maxTotal = Math.max(
+                    ...emissionData.map((s) => parseFloat(s.total))
+                  );
+                  const percentage =
+                    (parseFloat(site.total) / maxTotal) * 100;
+
                   return (
                     <div key={site.site}>
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-medium">{site.site}</span>
-                        <span className="text-sm text-muted-foreground">{site.total} tCO₂e</span>
+                        <span className="text-sm text-muted-foreground">
+                          {site.total} tCO₂e
+                        </span>
                       </div>
                       <div className="h-2 bg-muted rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-gradient-to-r from-emerald to-cyan transition-all"
+                        <div
+                          className="h-full bg-gradient-to-r from-emerald-500 to-cyan-500 transition-all"
                           style={{ width: `${percentage}%` }}
                         />
                       </div>
@@ -165,71 +256,7 @@ const Emissions = () => {
               </div>
             </CardContent>
           </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Category Breakdown</CardTitle>
-              <CardDescription>Emissions by source type</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {categoryData.map((cat) => (
-                  <div key={cat.category} className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className={`h-3 w-3 rounded-full ${cat.color}`} />
-                      <span className="text-sm font-medium">{cat.category}</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm text-muted-foreground">{cat.value} tCO₂e</span>
-                      <span className="text-sm font-semibold min-w-[3rem] text-right">{cat.percentage}%</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </div>
-
-        {/* Data Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Detailed Emissions Data</CardTitle>
-            <CardDescription>Complete breakdown by site and scope</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-border">
-                    <th className="text-left p-3 font-semibold">Site</th>
-                    <th className="text-right p-3 font-semibold">Scope 1</th>
-                    <th className="text-right p-3 font-semibold">Scope 2</th>
-                    <th className="text-right p-3 font-semibold">Scope 3</th>
-                    <th className="text-right p-3 font-semibold">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {emissionData.map((row) => (
-                    <tr key={row.site} className="border-b border-border/50 hover:bg-accent/5">
-                      <td className="p-3 font-medium">{row.site}</td>
-                      <td className="p-3 text-right text-muted-foreground">{row.scope1} tCO₂e</td>
-                      <td className="p-3 text-right text-muted-foreground">{row.scope2} tCO₂e</td>
-                      <td className="p-3 text-right text-muted-foreground">{row.scope3} tCO₂e</td>
-                      <td className="p-3 text-right font-semibold">{row.total} tCO₂e</td>
-                    </tr>
-                  ))}
-                  <tr className="border-t-2 border-border font-bold">
-                    <td className="p-3">Total</td>
-                    <td className="p-3 text-right">547.9 tCO₂e</td>
-                    <td className="p-3 text-right">1,070.9 tCO₂e</td>
-                    <td className="p-3 text-right">335.1 tCO₂e</td>
-                    <td className="p-3 text-right text-primary">1,953.9 tCO₂e</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </DashboardLayout>
   );
