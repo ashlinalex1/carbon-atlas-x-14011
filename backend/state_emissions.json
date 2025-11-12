@@ -1,0 +1,226 @@
+[
+  {
+    "States":"Andhra Pradesh",
+    "per capita CO2 (kg per person)":974.17,
+    "per capita CO (kg per person)":27.18,
+    "per capita CH4 (kg per person)":16.97,
+    "lat":15.9,
+    "lon":79.7
+  },
+  {
+    "States":"Arunachal",
+    "per capita CO2 (kg per person)":405.9,
+    "per capita CO (kg per person)":17.43,
+    "per capita CH4 (kg per person)":25.82,
+    "lat":27.1,
+    "lon":93.6
+  },
+  {
+    "States":"Assam",
+    "per capita CO2 (kg per person)":340.91,
+    "per capita CO (kg per person)":16.63,
+    "per capita CH4 (kg per person)":21.29,
+    "lat":26.2,
+    "lon":92.9
+  },
+  {
+    "States":"Bihar",
+    "per capita CO2 (kg per person)":179.01,
+    "per capita CO (kg per person)":8.83,
+    "per capita CH4 (kg per person)":9.59,
+    "lat":25.1,
+    "lon":85.3
+  },
+  {
+    "States":"Chattisgarh",
+    "per capita CO2 (kg per person)":1963.88,
+    "per capita CO (kg per person)":17.56,
+    "per capita CH4 (kg per person)":22.37,
+    "lat":21.2,
+    "lon":82.9
+  },
+  {
+    "States":"Goa",
+    "per capita CO2 (kg per person)":2662.51,
+    "per capita CO (kg per person)":23.12,
+    "per capita CH4 (kg per person)":7.62,
+    "lat":15.3,
+    "lon":74.1
+  },
+  {
+    "States":"Gujarat",
+    "per capita CO2 (kg per person)":1310.58,
+    "per capita CO (kg per person)":24.01,
+    "per capita CH4 (kg per person)":12.26,
+    "lat":22.3,
+    "lon":72.6
+  },
+  {
+    "States":"Haryana",
+    "per capita CO2 (kg per person)":1381.86,
+    "per capita CO (kg per person)":17.9,
+    "per capita CH4 (kg per person)":21.57,
+    "lat":29.0,
+    "lon":76.0
+  },
+  {
+    "States":"Himachal Pradesh",
+    "per capita CO2 (kg per person)":784.16,
+    "per capita CO (kg per person)":16.98,
+    "per capita CH4 (kg per person)":18.28,
+    "lat":31.1,
+    "lon":77.1
+  },
+  {
+    "States":"Jammu & Kashmir",
+    "per capita CO2 (kg per person)":509.03,
+    "per capita CO (kg per person)":15.59,
+    "per capita CH4 (kg per person)":14.42,
+    "lat":33.8,
+    "lon":75.0
+  },
+  {
+    "States":"Jharkhand",
+    "per capita CO2 (kg per person)":1403.43,
+    "per capita CO (kg per person)":15.02,
+    "per capita CH4 (kg per person)":15.39,
+    "lat":23.6,
+    "lon":85.3
+  },
+  {
+    "States":"Karnataka",
+    "per capita CO2 (kg per person)":888.86,
+    "per capita CO (kg per person)":24.93,
+    "per capita CH4 (kg per person)":12.2,
+    "lat":15.3,
+    "lon":75.7
+  },
+  {
+    "States":"Kerala",
+    "per capita CO2 (kg per person)":780.12,
+    "per capita CO (kg per person)":18.29,
+    "per capita CH4 (kg per person)":4.52,
+    "lat":10.1,
+    "lon":76.2
+  },
+  {
+    "States":"Madhya Pradesh",
+    "per capita CO2 (kg per person)":656.37,
+    "per capita CO (kg per person)":16.14,
+    "per capita CH4 (kg per person)":15.15,
+    "lat":23.3,
+    "lon":77.4
+  },
+  {
+    "States":"Maharashtra",
+    "per capita CO2 (kg per person)":936.7,
+    "per capita CO (kg per person)":23.58,
+    "per capita CH4 (kg per person)":9.8,
+    "lat":19.7,
+    "lon":75.7
+  },
+  {
+    "States":"Manipur",
+    "per capita CO2 (kg per person)":379.2,
+    "per capita CO (kg per person)":10.8,
+    "per capita CH4 (kg per person)":22.63,
+    "lat":24.7,
+    "lon":93.9
+  },
+  {
+    "States":"Meghalaya",
+    "per capita CO2 (kg per person)":691.53,
+    "per capita CO (kg per person)":12.65,
+    "per capita CH4 (kg per person)":19.8,
+    "lat":25.5,
+    "lon":91.3
+  },
+  {
+    "States":"Mizoram",
+    "per capita CO2 (kg per person)":754.71,
+    "per capita CO (kg per person)":15.4,
+    "per capita CH4 (kg per person)":10.72,
+    "lat":23.2,
+    "lon":92.9
+  },
+  {
+    "States":"Nagaland",
+    "per capita CO2 (kg per person)":1275.27,
+    "per capita CO (kg per person)":24.13,
+    "per capita CH4 (kg per person)":29.08,
+    "lat":26.1,
+    "lon":94.4
+  },
+  {
+    "States":"Odhisha",
+    "per capita CO2 (kg per person)":700.13,
+    "per capita CO (kg per person)":18.4,
+    "per capita CH4 (kg per person)":19.88,
+    "lat":20.3,
+    "lon":85.8
+  },
+  {
+    "States":"Punjab",
+    "per capita CO2 (kg per person)":1618.08,
+    "per capita CO (kg per person)":27.9,
+    "per capita CH4 (kg per person)":33.38,
+    "lat":31.1,
+    "lon":75.3
+  },
+  {
+    "States":"Rajasthan",
+    "per capita CO2 (kg per person)":793.69,
+    "per capita CO (kg per person)":14.33,
+    "per capita CH4 (kg per person)":14.18,
+    "lat":27.0,
+    "lon":74.2
+  },
+  {
+    "States":"Sikkim",
+    "per capita CO2 (kg per person)":711.39,
+    "per capita CO (kg per person)":11.68,
+    "per capita CH4 (kg per person)":10.04,
+    "lat":27.5,
+    "lon":88.5
+  },
+  {
+    "States":"Tamilnadu",
+    "per capita CO2 (kg per person)":985.7,
+    "per capita CO (kg per person)":26.6,
+    "per capita CH4 (kg per person)":10.4,
+    "lat":11.1,
+    "lon":78.6
+  },
+  {
+    "States":"Tripura",
+    "per capita CO2 (kg per person)":295.64,
+    "per capita CO (kg per person)":17.76,
+    "per capita CH4 (kg per person)":19.23,
+    "lat":23.9,
+    "lon":91.3
+  },
+  {
+    "States":"Uttar Pradesh",
+    "per capita CO2 (kg per person)":404.26,
+    "per capita CO (kg per person)":12.4,
+    "per capita CH4 (kg per person)":12.87,
+    "lat":26.8,
+    "lon":80.9
+  },
+  {
+    "States":"Uttarakhand",
+    "per capita CO2 (kg per person)":493.01,
+    "per capita CO (kg per person)":14.28,
+    "per capita CH4 (kg per person)":17.93,
+    "lat":30.0,
+    "lon":79.0
+  },
+  {
+    "States":"West Bengal",
+    "per capita CO2 (kg per person)":763.13,
+    "per capita CO (kg per person)":22.69,
+    "per capita CH4 (kg per person)":15.99,
+    "lat":22.9,
+    "lon":87.3
+  }
+]
