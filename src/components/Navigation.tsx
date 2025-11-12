@@ -10,15 +10,49 @@ export const Navigation = () => {
   const navigate = useNavigate();
   const [isDark, setIsDark] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
+  // Load theme from localStorage on initial render
   useEffect(() => {
-    // Set dark mode by default
-    document.documentElement.classList.add("dark");
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // If no saved theme, use system preference
+    if (savedTheme === null) {
+      setIsDark(prefersDark);
+      if (prefersDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } else {
+      // Use saved theme
+      const isDarkMode = savedTheme === 'dark';
+      setIsDark(isDarkMode);
+      if (isDarkMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+    
+    setIsMounted(true);
   }, []);
 
+  // Save theme preference and update UI
   const toggleTheme = () => {
-    setIsDark(!isDark);
-    document.documentElement.classList.toggle("dark");
+    const newIsDark = !isDark;
+    setIsDark(newIsDark);
+    
+    // Save to localStorage
+    localStorage.setItem('theme', newIsDark ? 'dark' : 'light');
+    
+    // Update class
+    if (newIsDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   };
 
   const navLinks = user
@@ -39,9 +73,15 @@ export const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-emerald to-cyan" />
-            <span className="text-xl font-bold text-foreground">CarbonX</span>
+          <Link to="/" className="flex items-center space-x-2 group">
+            <img 
+              src="/logo.png" 
+              alt="CarbonX Logo" 
+              className="h-8 w-8 transition-transform group-hover:scale-110"
+            />
+            <span className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-cyan-500 bg-clip-text text-transparent">
+              CarbonX
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -65,7 +105,7 @@ export const Navigation = () => {
               onClick={toggleTheme}
               className="rounded-full"
             >
-              {isDark ? (
+              {isMounted && isDark ? (
                 <Sun className="h-5 w-5" />
               ) : (
                 <Moon className="h-5 w-5" />
@@ -144,14 +184,6 @@ export const Navigation = () => {
                 {link.label}
               </Link>
             ))}
-            <div className="flex flex-col space-y-2 pt-4 border-t border-border">
-              <Button variant="ghost" asChild>
-                <Link to="/login">Login</Link>
-              </Button>
-              <Button asChild>
-                <Link to="/register">Get Started</Link>
-              </Button>
-            </div>
           </div>
         </div>
       </div>
