@@ -53,46 +53,124 @@ const GenerateReport = () => {
   setIsGenerating(true);
 
   try {
-    // Capture the dashboard content
-    const dashboardElement = document.querySelector('.dashboard-content') as HTMLElement; // Adjust the selector as needed
-    if (!dashboardElement) {
-      throw new Error('Dashboard content not found');
+    // Open dashboard in a new window
+    const dashboardWindow = window.open('/dashboard', '_blank');
+    
+    if (!dashboardWindow) {
+      throw new Error('Could not open dashboard. Please allow popups for this site.');
     }
 
-    // Convert the dashboard to an image
-    // Convert the dashboard to an image
-const canvas = await html2canvas(dashboardElement, {
-  scale: 2, // Increase for better quality
-  useCORS: true,
-  allowTaint: true,
-  logging: false,
-});
+    // Wait for the dashboard to load completely
+    await new Promise<void>((resolve) => {
+      const checkLoaded = async () => {
+        try {
+          // Wait for the document to be ready
+          if (dashboardWindow.document.readyState === 'complete') {
+            // Wait for any pending network requests
+            await new Promise(r => setTimeout(r, 1500));
+            
+            // Wait for charts and visualizations to render
+            await new Promise(r => requestAnimationFrame(r));
+            
+            // Additional delay to ensure everything is stable
+            await new Promise(r => setTimeout(r, 1000));
+            
+            resolve();
+          } else {
+            setTimeout(checkLoaded, 200);
+          }
+        } catch (error) {
+          console.warn('Error checking load status:', error);
+          // Fallback to fixed delay if there's an error
+          setTimeout(resolve, 3000);
+        }
+      };
+      
+      // Start checking
+      checkLoaded();
+      
+      // Absolute fallback timeout (5 seconds)
+      setTimeout(resolve, 5000);
+    });
 
-// Create a new PDF
-const pdf = new jsPDF('p', 'mm', 'a4');
-const imgData = canvas.toDataURL('image/png');
+    // Get the dashboard content
+    const dashboardElement = dashboardWindow.document.querySelector('.dashboard-content');
+    
+    if (!dashboardElement) {
+      throw new Error('Could not find dashboard content to export');
+    }
 
-// Get the image dimensions from the canvas
-const imgWidth = canvas.width;
-const imgHeight = canvas.height;
+    // Create canvas from the dashboard content
+    const canvas = await html2canvas(dashboardElement as HTMLElement, {
+      scale: 2, // Keep scale for better quality
+      useCORS: true,
+      allowTaint: true,
+      logging: true,
+      backgroundColor: '#000000',
+      scrollX: 0,
+      scrollY: -dashboardWindow.scrollY,
+      windowWidth: dashboardWindow.document.documentElement.offsetWidth,
+      windowHeight: dashboardWindow.document.documentElement.offsetHeight
+    });
 
-// Calculate dimensions to fit the PDF
-const pdfWidth = pdf.internal.pageSize.getWidth();
-const pdfHeight = (imgHeight * pdfWidth) / imgWidth;
+    // Create PDF with proper dimensions
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF({
+      orientation: 'landscape',
+      unit: 'mm',
+      format: 'a4'
+    });
 
-// Add the image to the PDF
-pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    
+    
+    // Calculate dimensions to maintain aspect ratio with margins
+    const imgWidth = pageWidth - 20; // 10mm margin on each side
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-// Save the PDF
-pdf.save(`${reportName.replace(/\s+/g, '_')}.pdf`);
+    // Add content to PDF with margins
+    pdf.addImage(
+      imgData, 
+      'PNG', 
+      10, // x margin
+      15, // y position (leaving space for header)
+      imgWidth,
+      imgHeight,
+      undefined,
+      'FAST'
+    );
+
+    // Add header
+    pdf.setFontSize(18);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text(reportName, pageWidth / 2, 10, { align: 'center' });
+    
+    // Add footer with page numbers
+    const pageCount = pdf.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      pdf.setPage(i);
+      pdf.setFontSize(10);
+      pdf.text(
+        `Page ${i} of ${pageCount} • Generated on ${new Date().toLocaleDateString()}`,
+        pageWidth / 2,
+        pageHeight - 10,
+        { align: 'center' }
+      );
+    }
+
+    // Save the PDF
+    const fileName = `${reportName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+    pdf.save(fileName);
+    
+    // Close the dashboard window
+    dashboardWindow.close();
 
     toast({
       title: "Success",
       description: "Your report has been downloaded successfully!",
     });
 
-    // Navigate back to reports page after a short delay
-    setTimeout(() => navigate('/reports'), 1500);
   } catch (error) {
     console.error('Error generating PDF:', error);
     toast({

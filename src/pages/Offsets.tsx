@@ -34,7 +34,7 @@ const Offsets = () => {
           <CardContent>
             <div className="flex items-end gap-4">
               <div className="flex-1">
-                <Label htmlFor="co2e">Carbon Emissions (tCO₂e)</Label>
+                <Label htmlFor="co2e">Carbon Emissions (kgCO₂e)</Label>
                 <Input
                   id="co2e"
                   // type="number"
