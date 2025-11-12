@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    
+    --primary: 158 64% 52%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    
+    --accent: 189 94% 43%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 158 64% 52%;
+    
+    --radius: 0.75rem;
+    
+    /* CarbonX specific colors */
+    --emerald: 158 64% 52%;
+    --emerald-dark: 158 64% 42%;
+    --emerald-light: 158 64% 62%;
+    
+    --cyan: 189 94% 43%;
+    --cyan-dark: 189 94% 33%;
+    
+    --earth: 25 75% 57%;
+    --solar: 43 96% 56%;
+    
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(158 64% 52% / 0.1), hsl(189 94% 43% / 0.1));
+    --gradient-primary: linear-gradient(135deg, hsl(158 64% 42%), hsl(158 64% 62%));
+    --gradient-data: linear-gradient(90deg, hsl(189 94% 43%), hsl(158 64% 52%));
+    
+    /* Shadows */
+    --shadow-glow: 0 0 40px hsl(158 64% 52% / 0.3);
+    --shadow-card: 0 4px 12px hsl(240 10% 3.9% / 0.08);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 158 64% 52%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 240 5.9% 90%;
+    --sidebar-ring: 158 64% 52%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    
+    --card: 240 6% 10%;
+    --card-foreground: 0 0% 98%;
+    
+    --popover: 240 6% 10%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 158 64% 52%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 240 5% 16%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 240 5% 16%;
+    --muted-foreground: 240 5% 64.9%;
+    
+    --accent: 189 94% 43%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 240 5% 20%;
+    --input: 240 5% 20%;
+    --ring: 158 64% 52%;
+    
+    /* CarbonX dark theme */
+    --emerald: 158 64% 52%;
+    --emerald-dark: 158 64% 42%;
+    --emerald-light: 158 64% 62%;
+    
+    --cyan: 189 94% 43%;
+    --cyan-dark: 189 94% 33%;
+    
+    --earth: 25 75% 57%;
+    --solar: 43 96% 56%;
+    
+    /* Dark gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(158 64% 52% / 0.15), hsl(189 94% 43% / 0.15));
+    --gradient-primary: linear-gradient(135deg, hsl(158 64% 42%), hsl(158 64% 62%));
+    --gradient-data: linear-gradient(90deg, hsl(189 94% 43%), hsl(158 64% 52%));
+    
+    /* Dark shadows */
+    --shadow-glow: 0 0 40px hsl(158 64% 52% / 0.2);
+    --shadow-card: 0 4px 12px hsl(0 0% 0% / 0.3);
+    
+    --sidebar-background: 240 6% 8%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 158 64% 52%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 5% 16%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 5% 20%;
+    --sidebar-ring: 158 64% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
