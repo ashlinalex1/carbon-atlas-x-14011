@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Navigation } from "./Navigation";
+import { Button } from "./ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -13,6 +15,7 @@ import {
   FileText,
   Bell,
   Settings,
+  LogOut,
 } from "lucide-react";
 
 interface DashboardLayoutProps {
@@ -34,6 +37,7 @@ const sidebarLinks = [
 
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const location = useLocation();
+  const { signOut, user } = useAuth();
 
   return (
     <div className="min-h-screen bg-background">
@@ -42,7 +46,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <div className="flex pt-16">
         {/* Sidebar */}
         <aside className="hidden lg:flex w-64 border-r border-border bg-card flex-col fixed left-0 top-16 bottom-0 overflow-y-auto">
-          <div className="p-6">
+          <div className="p-6 flex-1">
             <h2 className="text-sm font-semibold text-muted-foreground mb-4">
               Dashboard
             </h2>
@@ -68,6 +72,23 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 );
               })}
             </nav>
+          </div>
+          
+          {/* User Info & Logout */}
+          <div className="p-6 border-t border-border">
+            <div className="mb-3">
+              <p className="text-sm font-medium">{user?.email}</p>
+              <p className="text-xs text-muted-foreground">Logged in</p>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={signOut}
+              className="w-full"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </Button>
           </div>
         </aside>
 

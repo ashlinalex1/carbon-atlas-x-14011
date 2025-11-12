@@ -1,23 +1,70 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { insertSampleData } from "@/hooks/useSampleData";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    orgName: "",
+    fullName: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+  const [loading, setLoading] = useState(false);
+  const { signUp } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement registration
-    console.log("Registration attempt:", formData);
+
+    if (formData.password !== formData.confirmPassword) {
+      toast({
+        title: "Error",
+        description: "Passwords do not match",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      toast({
+        title: "Error",
+        description: "Password must be at least 6 characters",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    const { error } = await signUp(formData.email, formData.password, formData.fullName);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to register. Please try again.",
+        variant: "destructive",
+      });
+      setLoading(false);
+    } else {
+      toast({
+        title: "Success!",
+        description: "Account created successfully. Please check your email to verify your account.",
+      });
+      
+      // Create sample data for the new user
+      setTimeout(async () => {
+        await insertSampleData();
+        navigate("/dashboard");
+      }, 2000);
+    }
   };
 
   return (
@@ -35,13 +82,13 @@ const Register = () => {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="orgName">Organization Name</Label>
+                <Label htmlFor="fullName">Full Name</Label>
                 <Input
-                  id="orgName"
+                  id="fullName"
                   type="text"
-                  placeholder="Acme Inc."
-                  value={formData.orgName}
-                  onChange={(e) => setFormData({ ...formData, orgName: e.target.value })}
+                  placeholder="John Doe"
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                   required
                 />
               </div>
@@ -80,8 +127,8 @@ const Register = () => {
                 />
               </div>
 
-              <Button type="submit" className="w-full">
-                Create Account
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Creating Account..." : "Create Account"}
               </Button>
 
               <div className="relative">

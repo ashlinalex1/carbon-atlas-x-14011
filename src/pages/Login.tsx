@@ -1,19 +1,36 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { signIn } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement authentication
-    console.log("Login attempt:", { email, password });
+    setLoading(true);
+
+    const { error } = await signIn(email, password);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to login. Please check your credentials.",
+        variant: "destructive",
+      });
+    }
+    
+    setLoading(false);
   };
 
   return (
@@ -61,8 +78,8 @@ const Login = () => {
                 />
               </div>
 
-              <Button type="submit" className="w-full">
-                Login
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Logging in..." : "Login"}
               </Button>
 
               <div className="relative">
