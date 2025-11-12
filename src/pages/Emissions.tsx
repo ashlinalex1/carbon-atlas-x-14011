@@ -180,7 +180,7 @@ const Emissions = () => {
                   ? "..."
                   : `${categoryData
                       .reduce((sum, c) => sum + parseFloat(c.value), 0)
-                      .toFixed(1)} tCO₂e`}
+                      .toFixed(1)} kgCO₂e`}
               </div>
               <p className="text-xs text-muted-foreground mt-1">This month</p>
             </CardContent>
@@ -241,7 +241,7 @@ const Emissions = () => {
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-medium">{site.site}</span>
                         <span className="text-sm text-muted-foreground">
-                          {site.total} tCO₂e
+                          {site.total} kgCO₂e
                         </span>
                       </div>
                       <div className="h-2 bg-muted rounded-full overflow-hidden">

@@ -71,7 +71,7 @@
                           {region.intensity} intensity
                         </Badge>
                         <div className="text-right">
-                          <p className="font-medium">{region.emissions} tCO₂e</p>
+                          <p className="font-medium">{region.emissions} kgCO₂e</p>
                           <p className="text-xs text-muted-foreground">Total emissions</p>
                         </div>
                       </div>

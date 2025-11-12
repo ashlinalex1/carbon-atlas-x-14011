@@ -201,7 +201,7 @@ const Settings = () => {
                   <Input id="baseline" type="number" defaultValue="2020" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="baselineEmissions">Baseline Emissions (tCO₂e)</Label>
+                  <Label htmlFor="baselineEmissions">Baseline Emissions (kgCO₂e)</Label>
                   <Input id="baselineEmissions" type="number" defaultValue="5000" />
                 </div>
                 <Button>Update Goals</Button>
@@ -226,11 +226,11 @@ const Settings = () => {
                   <div className="grid grid-cols-2 gap-4 pt-4">
                     <div>
                       <p className="text-sm text-muted-foreground">Current Emissions</p>
-                      <p className="text-2xl font-bold">1,234 tCO₂e</p>
+                      <p className="text-2xl font-bold">1,234 kgCO₂e</p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Target Emissions</p>
-                      <p className="text-2xl font-bold">0 tCO₂e</p>
+                      <p className="text-2xl font-bold">0 kgCO₂e</p>
                     </div>
                   </div>
                 </div>

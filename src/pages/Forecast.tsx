@@ -52,7 +52,7 @@ const Forecast = () => {
             <CardContent>
               <div className="text-3xl font-bold">
                 {forecastData.current.toLocaleString()}
-                <span className="text-sm font-normal text-muted-foreground ml-2">tCO₂e</span>
+                <span className="text-sm font-normal text-muted-foreground ml-2">kgCO₂e</span>
               </div>
               <p className="text-xs text-muted-foreground mt-1">Last 30 days average</p>
             </CardContent>
@@ -67,7 +67,7 @@ const Forecast = () => {
             <CardContent>
               <div className="text-3xl font-bold">
                 {forecastData.predicted.toLocaleString()}
-                <span className="text-sm font-normal text-muted-foreground ml-2">tCO₂e</span>
+                <span className="text-sm font-normal text-muted-foreground ml-2">kgCO₂e</span>
               </div>
               <p className="text-xs text-destructive flex items-center gap-1 mt-1">
                 <TrendingUp className="h-3 w-3" />

@@ -70,7 +70,7 @@ const Offsets = () => {
                   {trees.toLocaleString()}
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Trees needed to offset {co2e} tCO₂e
+                  Trees needed to offset {co2e} kgCO₂e
                 </p>
               </div>
               <div className="flex justify-center">
@@ -107,7 +107,7 @@ const Offsets = () => {
                   {solar} kW
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Solar capacity needed for {co2e} tCO₂e
+                  Solar capacity needed for {co2e} kgCO₂e
                 </p>
               </div>
               <div className="flex justify-center">
@@ -145,14 +145,14 @@ const Offsets = () => {
                   ₹{donation.toLocaleString()}
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Estimated donation for {co2e} tCO₂e
+                  Estimated donation for {co2e} kgCO₂e
                 </p>
               </div>
               <div className="flex justify-center">
                 <div className="text-6xl">💚</div>
               </div>
               <p className="text-sm text-muted-foreground text-center">
-                Average rate: ₹950 per ton CO₂e through verified NGOs
+                Average rate: ₹950 per 1000 kgCO₂e through verified NGOs
               </p>
               <Button 
                 className="w-full" 
@@ -172,7 +172,7 @@ const Offsets = () => {
           </CardHeader>
           <CardContent>
             <p className="text-lg">
-              To achieve carbon neutrality for <span className="font-bold text-primary">{co2e} tCO₂e</span>, you can:
+              To achieve carbon neutrality for <span className="font-bold text-primary">{co2e} kgCO₂e</span>, you can:
             </p>
             <ul className="mt-4 space-y-2">
               <li className="flex items-center gap-2">

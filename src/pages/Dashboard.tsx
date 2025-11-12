@@ -144,7 +144,7 @@ const Dashboard = () => {
     {
       title: "Total Emissions",
       value: totalEmissions.toFixed(1),
-      unit: "tCO₂e",
+      unit: "kgCO₂e",
       change: -12,
       icon: Leaf,
       color: "text-emerald-500",
@@ -152,7 +152,7 @@ const Dashboard = () => {
     {
       title: "This Month",
       value: currentMonth.toFixed(1),
-      unit: "tCO₂e",
+      unit: "kgCO₂e",
       change: parseFloat(monthChange.toFixed(1)),
       icon: currentMonth > previousMonth ? TrendingUp : TrendingDown,
       color:
@@ -163,7 +163,7 @@ const Dashboard = () => {
       value: (
         categoryData.find((c) => c.name === "Energy")?.value || 0
       ).toFixed(1),
-      unit: "tCO₂e",
+      unit: "kgCO₂e",
       change: -8,
       icon: Zap,
       color: "text-yellow-500",
@@ -173,7 +173,7 @@ const Dashboard = () => {
       value: (
         categoryData.find((c) => c.name === "Transport")?.value || 0
       ).toFixed(1),
-      unit: "tCO₂e",
+      unit: "kgCO₂e",
       change: -15,
       icon: Plane,
       color: "text-blue-500",
@@ -283,7 +283,7 @@ const Dashboard = () => {
                       className="text-xs"
                       tick={{ fill: "hsl(var(--muted-foreground))" }}
                       label={{
-                        value: "tCO₂e",
+                        value: "kgCO₂e",
                         angle: -90,
                         position: "insideLeft",
                       }}
@@ -302,7 +302,7 @@ const Dashboard = () => {
                       stroke="#10b981"
                       strokeWidth={2}
                       dot={{ fill: "#10b981" }}
-                      name="Emissions (tCO₂e)"
+                      name="Emissions (kgCO₂e)"
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -412,7 +412,7 @@ const Dashboard = () => {
                     </p>
                     <p className="text-sm text-muted-foreground">
                       {record.emission_sources.category} •{" "}
-                      {(Number(record.emission_kg_co2) / 1000).toFixed(2)} tCO₂e
+                      {(Number(record.emission_kg_co2) / 1000).toFixed(2)} kgCO₂e
                     </p>
                   </div>
                   <p className="text-sm text-muted-foreground">
