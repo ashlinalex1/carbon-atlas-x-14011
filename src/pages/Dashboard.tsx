@@ -35,17 +35,17 @@ const Dashboard = () => {
       
       // Fetch all emissions data
       const { data: emissions, error } = await supabase
-        .from('emissions_data')
-        .select(`
-          id,
-          emission_kg_co2,
-          recorded_date,
-          emission_sources (
-            name,
-            category
-          )
-        `)
-        .order('recorded_date', { ascending: true });
+  .from('emissions_data')
+  .select(`
+    id,
+    emission_kg_co2,
+    recorded_date,
+    emission_sources!emissions_data_source_id_fkey (
+      name,
+      category
+    )
+  `)
+  .order('recorded_date', { ascending: true });
 
       if (error) {
         console.error('Error fetching emissions:', error);
