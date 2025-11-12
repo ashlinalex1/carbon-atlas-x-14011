@@ -16,6 +16,7 @@ import Actions from "./pages/Actions";
 import Offsets from "./pages/Offsets";
 import Map from "./pages/Map";
 import Reports from "./pages/Reports";
+import GenerateReport from "./pages/GenerateReport";
 import Alerts from "./pages/Alerts";
 import Settings from "./pages/Settings";
 import { useEffect } from "react";
@@ -71,6 +72,7 @@ const App = () => {
                 <Route path="/offsets" element={<Offsets />} />
                 <Route path="/map" element={<Map />} />
                 <Route path="/reports" element={<Reports />} />
+                <Route path="/generate-report" element={<GenerateReport />} />
                 <Route path="/alerts" element={<Alerts />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>

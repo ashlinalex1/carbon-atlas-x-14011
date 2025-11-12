@@ -3,9 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { FileText, Download, Calendar, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const Reports = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const reports = [
     {
@@ -39,10 +41,7 @@ const Reports = () => {
   ];
 
   const handleGenerateReport = () => {
-    toast({
-      title: "Report generation started",
-      description: "Your report will be ready in a few moments",
-    });
+    navigate('/generate-report');
   };
 
   const handleDownload = (title: string) => {

@@ -11,7 +11,7 @@ const Offsets = () => {
 
   const trees = Math.ceil(co2e / 21);
   const solar = (co2e / 1197).toFixed(1);
-  const donation = (co2e * 950).toFixed(0);
+  const donation = (trees * 150).toFixed(0);
 
   return (
     <DashboardLayout>
@@ -37,11 +37,11 @@ const Offsets = () => {
                 <Label htmlFor="co2e">Carbon Emissions (tCO₂e)</Label>
                 <Input
                   id="co2e"
-                  type="number"
+                  // type="number"
                   value={co2e}
                   onChange={(e) => setCo2e(Number(e.target.value))}
-                  min="0"
-                  step="0.1"
+                  
+                  
                 />
               </div>
               <Button>Calculate</Button>
@@ -79,8 +79,11 @@ const Offsets = () => {
               <p className="text-sm text-muted-foreground text-center">
                 Each tree absorbs approximately 21 kg of CO₂ per year
               </p>
-              <Button className="w-full" variant="outline">
-                Start Tree Project
+              <Button 
+                className="w-full" 
+                variant="outline"
+                onClick={() => window.open('https://plantamilliontrees.org.in/', '_blank', 'noopener,noreferrer')}
+              >                Start Tree Project
               </Button>
             </CardContent>
           </Card>
@@ -113,7 +116,11 @@ const Offsets = () => {
               <p className="text-sm text-muted-foreground text-center">
                 1 kW solar offsets approximately 1,197 kg CO₂e annually
               </p>
-              <Button className="w-full" variant="outline">
+              <Button 
+                className="w-full" 
+                variant="outline"
+                onClick={() => window.open('https://www.ecohubmap.com/list/business/solar%20vehicles/India', '_blank', 'noopener,noreferrer')}
+              >
                 Plan Solar Installation
               </Button>
             </CardContent>
@@ -147,7 +154,11 @@ const Offsets = () => {
               <p className="text-sm text-muted-foreground text-center">
                 Average rate: ₹950 per ton CO₂e through verified NGOs
               </p>
-              <Button className="w-full" variant="outline">
+              <Button 
+                className="w-full" 
+                variant="outline"
+                onClick={() => window.open('https://www.ecohubmap.com/list/NGO/climate/India', '_blank', 'noopener,noreferrer')}
+              >
                 Find NGO Partners
               </Button>
             </CardContent>
